@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="fanuc_crx10ial">
+
+  <!-- ================================================= -->
+  <!-- VIRTUAL JOINT (world -> robot)                   -->
+  <!-- ================================================= -->
+  <virtual_joint
+      name="virtual_joint"
+      type="fixed"
+      parent_frame="world"
+      child_link="base_link"/>
+
+  <!-- ================================================= -->
+  <!-- ARM GROUP                                        -->
+  <!-- ================================================= -->
+  <group name="arm">
+    <chain base_link="base_link" tip_link="tool0"/>
+  </group>
+
+  <!-- ================================================= -->
+  <!-- GRIPPER GROUP                                    -->
+  <!-- ================================================= -->
+  <group name="gripper">
+    <joint name="finger_joint"/>
+  </group>
+
+  <!-- ================================================= -->
+  <!-- END EFFECTOR                                     -->
+  <!-- ================================================= -->
+  <end_effector
+      name="robotiq_gripper"
+      parent_link="tool0"
+      group="gripper"
+      parent_group="arm"/>
+
+  <!-- ================================================= -->
+  <!-- GROUP STATES                                     -->
+  <!-- ================================================= -->
+
+  <!-- Arm home pose -->
+  <group_state name="home" group="arm">
+    <joint name="joint_1" value="0.0"/>
+    <joint name="joint_2" value="0.0"/>
+    <joint name="joint_3" value="0.0"/>
+    <joint name="joint_4" value="0.0"/>
+    <joint name="joint_5" value="0.0"/>
+    <joint name="joint_6" value="0.0"/>
+  </group_state>
+
+  <!-- Gripper open -->
+  <group_state name="open" group="gripper">
+    <joint name="finger_joint" value="0.0"/>
+  </group_state>
+
+  <!-- Gripper closed -->
+  <group_state name="closed" group="gripper">
+    <joint name="finger_joint" value="0.8"/>
+  </group_state>
+
+  <!-- ================================================= -->
+  <!-- PASSIVE JOINTS (Robotiq mimics)                   -->
+  <!-- ================================================= -->
+  <passive_joint name="left_inner_knuckle_joint"/>
+  <passive_joint name="left_inner_finger_joint"/>
+  <passive_joint name="right_inner_knuckle_joint"/>
+  <passive_joint name="right_inner_finger_joint"/>
+
+  <!-- ================================================= -->
+  <!-- DISABLE SELF-COLLISIONS (minimal, safe defaults) -->
+  <!-- ================================================= -->
+
+  <!-- Adjacent arm links -->
+  <disable_collisions link1="base_link" link2="link_1" reason="Adjacent"/>
+  <disable_collisions link1="link_1" link2="link_2" reason="Adjacent"/>
+  <disable_collisions link1="link_2" link2="link_3" reason="Adjacent"/>
+  <disable_collisions link1="link_3" link2="link_4" reason="Adjacent"/>
+  <disable_collisions link1="link_4" link2="link_5" reason="Adjacent"/>
+  <disable_collisions link1="link_5" link2="link_6" reason="Adjacent"/>
+
+  <!-- Wrist + tool -->
+  <disable_collisions link1="link_6" link2="flange" reason="Adjacent"/>
+  <disable_collisions link1="flange" link2="tool0" reason="Adjacent"/>
+
+  <!-- Gripper internals -->
+  <disable_collisions link1="robotiq_arg2f_base_link" link2="left_outer_knuckle" reason="Adjacent"/>
+  <disable_collisions link1="robotiq_arg2f_base_link" link2="right_outer_knuckle" reason="Adjacent"/>
+  <disable_collisions link1="left_outer_finger" link2="left_inner_finger" reason="Adjacent"/>
+  <disable_collisions link1="right_outer_finger" link2="right_inner_finger" reason="Adjacent"/>
+
+</robot>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ================================================= -->
+  <!-- ROS 2 CONTROL : RViz-only Fake Hardware System    -->
+  <!-- ================================================= -->
+
+  <ros2_control name="FanucWithRobotiq" type="system">
+
+   
+    <hardware>
+      <plugin>mock_components/GenericSystem</plugin>
+    </hardware>
+
+    <!-- ================= FANUC ARM JOINTS ================= -->
+
+    <joint name="joint_1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="joint_2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="joint_3">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="joint_4">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="joint_5">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="joint_6">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <!-- ================= ROBOTIQ GRIPPER ================= -->
+
+    <!-- ONLY the master joint -->
+    <joint name="finger_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+
+  </ros2_control>
+
+</robot>

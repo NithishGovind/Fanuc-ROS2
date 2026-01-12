@@ -1,0 +1,10 @@
+# Cartesian limits for Pilz Industrial Motion Planner
+# Fanuc CRX-10iAL + Robotiq 2F-85
+# Safe for RViz-only (fake ros2_control) and real hardware later
+
+cartesian_limits:
+  max_trans_vel: 0.5        # m/s  (conservative, smooth)
+  max_trans_acc: 1.0        # m/s^2
+  max_trans_dec: -1.0       # m/s^2 (must be negative)
+
+  max_rot_vel: 1.0          # rad/s

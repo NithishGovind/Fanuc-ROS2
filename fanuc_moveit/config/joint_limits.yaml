@@ -1,0 +1,71 @@
+# Joint limits for Fanuc CRX-10iAL + Robotiq 2F-85
+# Used by MoveIt for planning (not by ros2_control directly)
+
+default_velocity_scaling_factor: 0.1
+default_acceleration_scaling_factor: 0.1
+
+joint_limits:
+
+  joint_1:
+    has_position_limits: true
+    min_position: -3.14159
+    max_position:  3.14159
+    has_velocity_limits: true
+    max_velocity: 2.09        # rad/s (conservative)
+    has_acceleration_limits: true
+    max_acceleration: 3.0     # rad/s^2
+
+  joint_2:
+    has_position_limits: true
+    min_position: -3.14159
+    max_position:  3.14159
+    has_velocity_limits: true
+    max_velocity: 2.09
+    has_acceleration_limits: true
+    max_acceleration: 3.0
+
+  joint_3:
+    has_position_limits: true
+    min_position: -4.71239
+    max_position:  4.71239
+    has_velocity_limits: true
+    max_velocity: 3.14
+    has_acceleration_limits: true
+    max_acceleration: 4.0
+
+  joint_4:
+    has_position_limits: true
+    min_position: -3.31613
+    max_position:  3.31613
+    has_velocity_limits: true
+    max_velocity: 3.14
+    has_acceleration_limits: true
+    max_acceleration: 4.0
+
+  joint_5:
+    has_position_limits: true
+    min_position: -3.14159
+    max_position:  3.14159
+    has_velocity_limits: true
+    max_velocity: 3.14
+    has_acceleration_limits: true
+    max_acceleration: 4.0
+
+  joint_6:
+    has_position_limits: true
+    min_position: -3.31613
+    max_position:  3.31613
+    has_velocity_limits: true
+    max_velocity: 3.14
+    has_acceleration_limits: true
+    max_acceleration: 4.0
+
+  # ================= ROBOTIQ GRIPPER =================
+  finger_joint:
+    has_position_limits: true
+    min_position: 0.0
+    max_position: 0.8
+    has_velocity_limits: true
+    max_velocity: 1.0          # smooth gripper motion
+    has_acceleration_limits: true
+    max_acceleration: 2.0
