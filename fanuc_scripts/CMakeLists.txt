@@ -31,6 +31,11 @@ install(PROGRAMS
   ${PROJECT_NAME}/ptp_move.py
   DESTINATION lib/${PROJECT_NAME}
 )
+install(PROGRAMS
+  ${PROJECT_NAME}/lin_move.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 
 ament_package()

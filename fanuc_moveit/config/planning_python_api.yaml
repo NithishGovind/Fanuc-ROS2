@@ -1,16 +1,23 @@
 # Planning pipeline configuration for MoveIt Python API
 # Fanuc CRX-10iAL + Robotiq 2F-85
 
+# planning_pipelines:
+#   pipeline_names:
+#     - ompl
+#     - pilz_industrial_motion_planner
+
+# plan_request_params:
+#   planning_pipeline: ompl
+#   planner_id: RRTConnectkConfigDefault
+#   planning_attempts: 3
 planning_pipelines:
   pipeline_names:
-    - ompl
     - pilz_industrial_motion_planner
 
 plan_request_params:
-  planning_pipeline: ompl
-  planner_id: RRTConnectkConfigDefault
-  planning_attempts: 3
-
+  planning_pipeline: pilz_industrial_motion_planner
+  planner_id: LIN
+  planning_attempts: 1
   # These are scaling factors (0.0 – 1.0)
   # They multiply the joint_limits.yaml values
   max_velocity_scaling_factor: 0.1
