@@ -9,7 +9,7 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
     gripper_controller:
-      type: forward_command_controller/ForwardCommandController
+      type: position_controllers/GripperActionController
 
 # ================= FANUC ARM =================
 arm_controller:
@@ -34,7 +34,9 @@ arm_controller:
 # ================= ROBOTIQ GRIPPER =================
 gripper_controller:
   ros__parameters:
-    joints:
-      - finger_joint
+    joint: finger_joint
 
-    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

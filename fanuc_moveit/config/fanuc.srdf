@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <robot name="fanuc_crx10ial">
 
   <!-- ================================================= -->
@@ -19,7 +18,7 @@
   </group>
 
   <!-- ================================================= -->
-  <!-- GRIPPER GROUP                                    -->
+  <!-- GRIPPER GROUP (single DOF)                        -->
   <!-- ================================================= -->
   <group name="gripper">
     <joint name="finger_joint"/>
@@ -38,7 +37,7 @@
   <!-- GROUP STATES                                     -->
   <!-- ================================================= -->
 
-  <!-- Arm home pose -->
+  <!-- Arm home -->
   <group_state name="home" group="arm">
     <joint name="joint_1" value="0.0"/>
     <joint name="joint_2" value="0.0"/>
@@ -67,10 +66,8 @@
   <passive_joint name="right_inner_finger_joint"/>
 
   <!-- ================================================= -->
-  <!-- DISABLE SELF-COLLISIONS (minimal, safe defaults) -->
+  <!-- ARM SELF-COLLISIONS (adjacent only)               -->
   <!-- ================================================= -->
-
-  <!-- Adjacent arm links -->
   <disable_collisions link1="base_link" link2="link_1" reason="Adjacent"/>
   <disable_collisions link1="link_1" link2="link_2" reason="Adjacent"/>
   <disable_collisions link1="link_2" link2="link_3" reason="Adjacent"/>
@@ -78,71 +75,65 @@
   <disable_collisions link1="link_4" link2="link_5" reason="Adjacent"/>
   <disable_collisions link1="link_5" link2="link_6" reason="Adjacent"/>
 
-  <!-- Wrist + tool -->
+  <!-- Wrist frames -->
   <disable_collisions link1="link_6" link2="flange" reason="Adjacent"/>
   <disable_collisions link1="flange" link2="tool0" reason="Adjacent"/>
 
-  <!-- Gripper internals -->
+  <!-- ================================================= -->
+  <!-- FANUC ↔ ROBOTIQ ATTACHMENT                        -->
+  <!-- ================================================= -->
+  <disable_collisions link1="link_6" link2="robotiq_arg2f_base_link" reason="Adjacent"/>
+  <disable_collisions link1="flange" link2="robotiq_arg2f_base_link" reason="Adjacent"/>
+
+  <!-- Prevent false wrist ↔ finger collisions -->
+  <disable_collisions link1="link_6" link2="left_outer_finger" reason="Never"/>
+  <disable_collisions link1="link_6" link2="right_outer_finger" reason="Never"/>
+  <disable_collisions link1="flange" link2="left_outer_finger" reason="Never"/>
+  <disable_collisions link1="flange" link2="right_outer_finger" reason="Never"/>
+
+  <!-- ================================================= -->
+  <!-- ROBOTIQ INTERNAL SELF-COLLISIONS                  -->
+  <!-- ================================================= -->
+
+  <!-- Base ↔ knuckles -->
   <disable_collisions link1="robotiq_arg2f_base_link" link2="left_outer_knuckle" reason="Adjacent"/>
   <disable_collisions link1="robotiq_arg2f_base_link" link2="right_outer_knuckle" reason="Adjacent"/>
-  <disable_collisions link1="left_outer_finger" link2="left_inner_finger" reason="Adjacent"/>
-  <disable_collisions link1="right_outer_finger" link2="right_inner_finger" reason="Adjacent"/>
-  <!-- ================= ROBOTIQ SELF-COLLISIONS ================= -->
+  <disable_collisions link1="robotiq_arg2f_base_link" link2="left_inner_knuckle" reason="Adjacent"/>
+  <disable_collisions link1="robotiq_arg2f_base_link" link2="right_inner_knuckle" reason="Adjacent"/>
 
-  <disable_collisions link1="left_inner_finger" link2="left_inner_finger_pad" reason="Adjacent"/>
-  <disable_collisions link1="right_inner_finger" link2="right_inner_finger_pad" reason="Adjacent"/>
-
-  <disable_collisions link1="left_outer_finger" link2="left_inner_finger" reason="Adjacent"/>
-  <disable_collisions link1="right_outer_finger" link2="right_inner_finger" reason="Adjacent"/>
-
+  <!-- Outer knuckle ↔ outer finger -->
   <disable_collisions link1="left_outer_knuckle" link2="left_outer_finger" reason="Adjacent"/>
   <disable_collisions link1="right_outer_knuckle" link2="right_outer_finger" reason="Adjacent"/>
 
+  <!-- Inner knuckle ↔ inner finger -->
   <disable_collisions link1="left_inner_knuckle" link2="left_inner_finger" reason="Adjacent"/>
   <disable_collisions link1="right_inner_knuckle" link2="right_inner_finger" reason="Adjacent"/>
 
-  <disable_collisions link1="left_inner_finger_pad" link2="right_inner_finger_pad" reason="Never"/>
-  <!-- ================= FANUC ↔ ROBOTIQ ATTACHMENT ================= -->
+  <!-- Inner finger ↔ finger pad -->
+  <disable_collisions link1="left_inner_finger" link2="left_inner_finger_pad" reason="Adjacent"/>
+  <disable_collisions link1="right_inner_finger" link2="right_inner_finger_pad" reason="Adjacent"/>
 
-  <disable_collisions
-    link1="link_6"
-    link2="robotiq_arg2f_base_link"
-    reason="Adjacent"/>
+  <!-- Knuckle ↔ finger pad -->
+  <disable_collisions link1="left_inner_knuckle" link2="left_inner_finger_pad" reason="Adjacent"/>
+  <disable_collisions link1="right_inner_knuckle" link2="right_inner_finger_pad" reason="Adjacent"/>
 
-  <disable_collisions
-    link1="flange"
-    link2="robotiq_arg2f_base_link"
-    reason="Adjacent"/>
-<!-- ================= ROBOTIQ BASE SELF-COLLISIONS ================= -->
+  <!-- Expected self-contact during closing -->
+  <disable_collisions link1="left_inner_knuckle" link2="left_outer_finger" reason="Never"/>
+  <disable_collisions link1="right_inner_knuckle" link2="right_outer_finger" reason="Never"/>
+  <!-- Robotiq finger internal collisions -->
+  <disable_collisions link1="right_inner_finger" link2="right_outer_finger" reason="Never"/>
+  <disable_collisions link1="left_inner_finger" link2="left_outer_finger" reason="Never"/>
 
-  <disable_collisions
-    link1="robotiq_arg2f_base_link"
-    link2="left_inner_knuckle"
-    reason="Adjacent"/>
+  <disable_collisions link1="right_inner_knuckle" link2="right_outer_finger" reason="Never"/>
+  <disable_collisions link1="left_inner_knuckle" link2="left_outer_finger" reason="Never"/>
 
-  <disable_collisions
-    link1="robotiq_arg2f_base_link"
-    link2="right_inner_knuckle"
-    reason="Adjacent"/>
+  <disable_collisions link1="right_inner_finger" link2="right_inner_knuckle" reason="Never"/>
+  <disable_collisions link1="left_inner_finger" link2="left_inner_knuckle" reason="Never"/>
 
-  <disable_collisions
-    link1="robotiq_arg2f_base_link"
-    link2="left_outer_knuckle"
-    reason="Adjacent"/>
+  <disable_collisions link1="right_outer_finger" link2="right_outer_knuckle" reason="Never"/>
+  <disable_collisions link1="left_outer_finger" link2="left_outer_knuckle" reason="Never"/>
 
-  <disable_collisions
-    link1="robotiq_arg2f_base_link"
-    link2="right_outer_knuckle"
-    reason="Adjacent"/>
-  <!-- Robotiq internal collisions -->
-  <disable_collisions link1="left_inner_knuckle" link2="left_outer_finger" reason="Adjacent"/>
-  <disable_collisions link1="right_inner_knuckle" link2="right_outer_finger" reason="Adjacent"/>
-  <disable_collisions link1="left_inner_finger" link2="left_outer_finger" reason="Adjacent"/>
-  <disable_collisions link1="right_inner_finger" link2="right_outer_finger" reason="Adjacent"/>
-  <disable_collisions link1="left_inner_knuckle" link2="robotiq_arg2f_base_link" reason="Adjacent"/>
-  <disable_collisions link1="right_inner_knuckle" link2="robotiq_arg2f_base_link" reason="Adjacent"/>
-
-
-
+  <disable_collisions link1="right_inner_finger_pad" link2="right_outer_finger" reason="Never"/>
+  <disable_collisions link1="left_inner_finger_pad" link2="left_outer_finger" reason="Never"/>
 
 </robot>
