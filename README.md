@@ -1,4 +1,4 @@
-# Fanuc CRX-10iAL + Robotiq 2F-85 - MoveIt 2 Bringup
+# Fanuc CRX-10iAL + Robotiq 2F-85 - MoveIt 2
 
 ![Alt Text](image.png)
 
