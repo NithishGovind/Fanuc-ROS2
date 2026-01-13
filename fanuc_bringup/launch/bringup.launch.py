@@ -12,17 +12,20 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 def generate_launch_description():
 
-    # ---------------- Arguments ----------------
+    # ================= ARGUMENTS =================
     is_sim_arg = DeclareLaunchArgument(
         "is_sim",
         default_value="false",
-        description="Use simulation time"
+        description="Use simulation time (RViz-only or Gazebo)"
     )
     is_sim = LaunchConfiguration("is_sim")
 
-    # ---------------- Robot Description ----------------
+    # ================= PATHS =================
     fanuc_description_pkg = get_package_share_directory("fanuc_description")
+    fanuc_moveit_pkg = get_package_share_directory("fanuc_moveit")
+    fanuc_controller_pkg = get_package_share_directory("fanuc_controller")
 
+    # ================= ROBOT DESCRIPTION =================
     robot_description = ParameterValue(
         Command([
             "xacro ",
@@ -35,7 +38,7 @@ def generate_launch_description():
         value_type=str
     )
 
-    # ---------------- Robot State Publisher ----------------
+    # ================= ROBOT STATE PUBLISHER =================
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -46,8 +49,8 @@ def generate_launch_description():
         ],
     )
 
-    # ---------------- ros2_control ----------------
-    controller_manager_node = Node(
+    # ================= ROS2 CONTROL =================
+    ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         output="screen",
@@ -55,14 +58,14 @@ def generate_launch_description():
             {"robot_description": robot_description},
             {"use_sim_time": is_sim},
             os.path.join(
-                get_package_share_directory("fanuc_controller"),
+                fanuc_controller_pkg,
                 "config",
                 "fanuc_controllers.yaml",
             ),
         ],
     )
 
-    # ---------------- Controller Spawners ----------------
+    # ================= CONTROLLER SPAWNERS =================
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -84,20 +87,29 @@ def generate_launch_description():
         output="screen",
     )
 
-    # ---------------- MoveIt Config ----------------
+    # ================= MOVEIT CONFIG =================
     moveit_config = (
-        MoveItConfigsBuilder("fanuc_crx10ial", package_name="fanuc_moveit")
-        .robot_description(file_path=os.path.join(
-            fanuc_description_pkg,
-            "urdf",
-            "crx10ial.urdf.xacro"
-        ))
-        .robot_description_semantic(file_path="config/fanuc.srdf")
-        .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        MoveItConfigsBuilder(
+            robot_name="fanuc_crx10ial",
+            package_name="fanuc_moveit"
+        )
+        .robot_description(
+            file_path=os.path.join(
+                fanuc_description_pkg,
+                "urdf",
+                "crx10ial.urdf.xacro",
+            )
+        )
+        .robot_description_semantic(
+            file_path="config/fanuc.srdf"
+        )
+        .trajectory_execution(
+            file_path="config/moveit_controllers.yaml"
+        )
         .to_moveit_configs()
     )
 
-    # ---------------- Move Group ----------------
+    # ================= MOVE GROUP =================
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
@@ -110,9 +122,9 @@ def generate_launch_description():
         arguments=["--ros-args", "--log-level", "info"],
     )
 
-    # ---------------- RViz ----------------
+    # ================= RVIZ =================
     rviz_config = os.path.join(
-        get_package_share_directory("fanuc_moveit"),
+        fanuc_moveit_pkg,
         "config",
         "moveit.rviz",
     )
@@ -131,12 +143,12 @@ def generate_launch_description():
         ],
     )
 
-    # ---------------- Launch Order ----------------
+    # ================= LAUNCH =================
     return LaunchDescription([
         is_sim_arg,
 
         robot_state_publisher_node,
-        controller_manager_node,
+        ros2_control_node,
 
         joint_state_broadcaster_spawner,
         arm_controller_spawner,

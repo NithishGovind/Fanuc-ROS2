@@ -22,5 +22,15 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+install(
+  DIRECTORY include launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(PROGRAMS
+  ${PROJECT_NAME}/ptp_move.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 ament_package()
