@@ -75,6 +75,63 @@ This launches:
 
 ---
 
+## ▶️ Running Cartesian Linear Motion (Pilz LIN)
+
+This project supports **Cartesian space linear motion** using the **Pilz Industrial Motion Planner (LIN)** via the MoveIt Python API.
+
+---
+
+### Prerequisites
+
+Ensure the following are running correctly:
+
+- Robot description and `ros2_control` controllers  
+- MoveIt `move_group`  
+- Correct planning parameters (`planning_python_api.yaml`) configured for Pilz LIN  
+
+Make sure your workspace is built and sourced:
+
+```bash
+cd ~/dexsent/dex_ws
+colcon build
+source install/setup.bash
+```
+
+---
+
+### Step 1: Bring up the robot and MoveIt
+
+Launch the full bringup (robot + controllers + MoveIt + RViz):
+
+```bash
+ros2 launch fanuc_bringup bringup.launch.py
+```
+
+Wait until RViz shows:
+
+```
+Ready to take commands for planning group arm.
+```
+
+---
+
+### Step 2: Run Cartesian LIN motion
+
+In a **new terminal**, source the workspace and launch the Cartesian motion node:
+
+```bash
+source ~/dexsent/dex_ws/install/setup.bash
+ros2 launch fanuc_scripts lin_move.launch.py
+```
+
+---
+
+### What this does
+
+- Plans a **Cartesian straight-line (LIN)** motion in task space  
+- Moves the **FANUC CRX-10iAL** end-effector to the target pose  
+- Executes the trajectory via `arm_controller`  
+
 ## Known Limitations
 - No Gazebo physics
 - No force/torque feedback
