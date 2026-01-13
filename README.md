@@ -1,5 +1,7 @@
 # Fanuc CRX-10iAL + Robotiq 2F-85 — MoveIt 2 Bringup
 
+![Alt Text](image.png)
+
 ## Overview
 This repository documents the **end-to-end MoveIt 2 bringup** of a **Fanuc CRX-10iAL** collaborative robot with a **Robotiq 2F-85 gripper** using **ROS 2 Humble**.
 
